@@ -1,5 +1,7 @@
 package dam.pmdm.spyrothedragon;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -89,5 +91,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    protected void onCreateGuide(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        SharedPreferences prefs = getSharedPreferences("GuidePrefs", MODE_PRIVATE);
+        boolean guideCompleted = prefs.getBoolean("GuideCompleted", false);
+
+        if (!guideCompleted) {
+            Intent intent = new Intent(this, GuideActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+    }
 }

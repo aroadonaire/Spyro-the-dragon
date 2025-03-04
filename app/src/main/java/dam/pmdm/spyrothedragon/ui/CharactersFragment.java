@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -30,6 +34,9 @@ public class CharactersFragment extends Fragment {
     private RecyclerView recyclerView;
     private CharactersAdapter adapter;
     private List<Character> charactersList;
+    private TextView guideBubbleText;
+
+    private ImageView bubbleBackground;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +51,8 @@ public class CharactersFragment extends Fragment {
 
         // Cargamos los personajes desde el XML
         loadCharacters();
+        guideBubbleText = binding.getRoot().findViewById(R.id.guideText);
+        bubbleBackground = binding.getRoot().findViewById(R.id.bubble_background);
         return binding.getRoot();
     }
 
@@ -105,4 +114,33 @@ public class CharactersFragment extends Fragment {
         }
     }
 
+    private void showGuideBubble() {
+        guideBubbleText.setVisibility(View.VISIBLE);
+        bubbleBackground.setVisibility(View.VISIBLE);
+
+        Animation fadeInBackground = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        bubbleBackground.startAnimation(fadeInBackground);
+
+        Animation fadeInText = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        guideBubbleText.startAnimation(fadeInText);
+
+        guideBubbleText.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Animation fadeOutText = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+                guideBubbleText.startAnimation(fadeOutText);
+
+                Animation fadeOutBackground = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+                bubbleBackground.startAnimation(fadeOutBackground);
+
+                guideBubbleText.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        guideBubbleText.setVisibility(View.GONE);
+                        bubbleBackground.setVisibility(View.GONE);
+                    }
+                }, 500);
+            }
+        }, 3000);
+    }
 }

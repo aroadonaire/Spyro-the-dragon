@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -28,6 +32,8 @@ public class WorldsFragment extends Fragment {
     private RecyclerView recyclerView;
     private WorldsAdapter adapter;
     private List<World> worldsList;
+    private TextView guideBubbleText;
+    private ImageView guideBubbleBackground;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +46,10 @@ public class WorldsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         loadWorlds();
+        guideBubbleText = binding.getRoot().findViewById(R.id.bubbleText);
+        guideBubbleBackground = binding.getRoot().findViewById(R.id.bubbleBackground);
+        showGuideBubble();
+
         return binding.getRoot();
     }
 
@@ -98,5 +108,21 @@ public class WorldsFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+    private void showGuideBubble() {
+        guideBubbleText.setVisibility(View.VISIBLE);
+        guideBubbleBackground.setVisibility(View.VISIBLE);
+        Animation fadeIn = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        guideBubbleText.startAnimation(fadeIn);
+        Animation fadeInBackground = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        guideBubbleBackground.startAnimation(fadeInBackground);
+        guideBubbleText.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                guideBubbleText.setVisibility(View.GONE);
+                guideBubbleBackground.setVisibility(View.GONE);
+            }
+        }, 3000);
     }
 }

@@ -3,6 +3,8 @@ package dam.pmdm.spyrothedragon.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +37,9 @@ public class WorldsAdapter extends RecyclerView.Adapter<WorldsAdapter.WorldsView
         // Cargar la imagen (simulado con un recurso drawable)
         int imageResId = holder.itemView.getContext().getResources().getIdentifier(world.getImage(), "drawable", holder.itemView.getContext().getPackageName());
         holder.imageImageView.setImageResource(imageResId);
+
+        Animation animation= AnimationUtils.loadAnimation(holder.itemView.getContext(),R.anim.fade_in);
+        holder.itemView.startAnimation(animation);
     }
 
     @Override
